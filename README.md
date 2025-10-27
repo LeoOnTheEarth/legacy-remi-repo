@@ -24,4 +24,8 @@ gpgcheck=0
 
 ### Supported Linux distributions:
 
-- AlmaLinux 9
+- AlmaLinux 9  
+  Required options: `--enablerepo=crb --enablerepo=remi`
+
+- Oracle Linux 9  
+  Required options: `--enablerepo=ol9_codeready_builder --enablerepo=remi`
