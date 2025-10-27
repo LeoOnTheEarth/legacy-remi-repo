@@ -1,11 +1,26 @@
 Provide legacy remi RPM packages
 ================================
 
-Provid PHP packages that not maintained by remi.
+Provide PHP packages that not maintained by remi.
+
+
+### Setup Repository
+
+Add a repository file to `/etc/yum.repos.d/legacy-remi.repo`, file content as below:
+
+```
+[legacy-remi]
+name=Legacy Remi repository
+baseurl=https://rpms.leoontheearth.me/rpms
+enabled=1
+gpgcheck=0
+```
+
 
 ### Supported PHP versions:
 
 - PHP56
+
 
 ### Supported Linux distributions:
 
