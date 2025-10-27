@@ -1,0 +1,14 @@
+--- php-fedora-autoloader.spec	2020-02-13 14:13:31.000000000 +0800
++++ php-fedora-autoloader-patched.spec	2025-10-20 18:34:35.816213400 +0800
+@@ -46,11 +46,7 @@
+ BuildRequires: php-cli
+ ## composer.json
+ BuildRequires: php(language) >= %{php_min_ver}
+-%if 0%{?fedora} >= 29 || 0%{?rhel} >= 8
+-%global phpunit %{_bindir}/phpunit8
+-%else
+ %global phpunit %{_bindir}/phpunit
+-%endif
+ BuildRequires: %{phpunit}
+ BuildRequires: php-composer(theseer/autoload) >= %{phpab_min_ver}
+ BuildRequires: php-pear

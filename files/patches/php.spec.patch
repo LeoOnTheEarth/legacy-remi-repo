@@ -1,0 +1,44 @@
+--- php.spec	2024-12-06 08:00:00.000000000 +0800
++++ php-patched.spec	2025-10-20 15:02:31.529980000 +0800
+@@ -291,6 +291,9 @@
+ BuildRequires: httpd-filesystem
+ %endif
+ BuildRequires: libstdc++-devel, openssl-devel
++%if 0%{?rhel} >= 9
++BuildRequires: compat-openssl11-devel
++%endif
+ %if %{with_sqlite3}
+ # For SQLite3 extension
+ BuildRequires: sqlite-devel >= 3.6.0
+@@ -721,6 +724,8 @@
+ Obsoletes:      %{?scl_prefix}php-pecl-oci8 <  %{oci8ver}
+ Conflicts:      %{?scl_prefix}php-pecl-oci8 >= %{oci8ver}
+ Provides:       %{?scl_prefix}php-pecl(oci8) = %{oci8ver}, %{?scl_prefix}php-pecl(oci8)%{?_isa} = %{oci8ver}
++# Should requires libclntsh.so.12.1, but it's not provided by Oracle RPM.
++AutoReq:        0
+ 
+ %description oci8
+ The %{?scl_prefix}php-oci8 packages provides the OCI8 extension version %{oci8ver}
+@@ -734,6 +739,10 @@
+ provided by Oracle Instant Client RPM available from Oracle on:
+ https://www.oracle.com/database/technologies/instant-client/downloads.html
+ 
++Notice:
++- %{?scl_prefix}php-oci8 provides oci8 and pdo_oci extensions from php sources.
++- %{?scl_prefix}php-pecl-oci8 only provides oci8 extension.
++
+ Documentation is at http://php.net/oci8 and http://php.net/pdo_oci
+ %endif
+ 
+@@ -1240,6 +1249,11 @@
+ ./buildconf --force
+ 
+ CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-pointer-sign"
++%if 0%{?rhel} >= 9
++CFLAGS="-I%{_root_includedir}/openssl11 $CFLAGS"
++LDFLAGS="-L%{_root_libdir}/openssl11 $LDFLAGS"
++export LDFLAGS
++%endif
+ export CFLAGS
+ 
+ # Install extension modules in %{_libdir}/php/modules.
