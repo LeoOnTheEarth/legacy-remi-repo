@@ -2,8 +2,8 @@
 
 set -x
 
-RPM_BUILD_DIR=$HOME/rpmbuild
-BUILD_DIR=$HOME/build-remi-rpms
+RPMBUILD_DIR=$HOME/rpmbuild
+BUILD_DIR=/tmp/build-remi-rpms
 MOCK_CONFIG=almalinux-9-x86_64
 MOCK_RESULT_DIR=/var/lib/mock/$MOCK_CONFIG/result
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" && pwd -P )
@@ -31,154 +31,154 @@ sudo cp $SCRIPT_DIR/files/mock/$MOCK_CONFIG.cfg /etc/mock/$MOCK_CONFIG.cfg
 cd $BUILD_DIR
 wget http://vault.almalinux.org/9.6/AppStream/Source/Packages/compat-openssl11-1.1.1k-5.el9_6.1.src.rpm
 rpm -i compat-openssl11-1.1.1k-5.el9_6.1.src.rpm
-cd $RPM_BUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SPECS
 patch -i $BUILD_DIR/patches/compat-openssl11.spec.patch
 rpmbuild -bs compat-openssl11.spec
-cp $RPM_BUILD_DIR/SRPMS/compat-openssl11-1.1.1k-5.el9.1.src.rpm $BUILD_DIR/srpms
+cp $RPMBUILD_DIR/SRPMS/compat-openssl11-1.1.1k-5.el9.1.src.rpm $BUILD_DIR/srpms
 rm $BUILD_DIR/compat-openssl11-1.1.1k-5.el9_6.1.src.rpm
-rm -rf $RPM_BUILD_DIR
+rm -rf $RPMBUILD_DIR
 
 # Create SRPM for php
 cd $BUILD_DIR
 wget https://rpms.remirepo.net/SRPMS/php56-php-5.6.40-45.remi.src.rpm
 rpm -i php56-php-5.6.40-45.remi.src.rpm
-cd $RPM_BUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SPECS
 patch -i $BUILD_DIR/patches/php.spec.patch
 rpmbuild -bs php.spec
-cp $RPM_BUILD_DIR/SRPMS/php-5.6.40-45.el9.src.rpm $BUILD_DIR/srpms
+cp $RPMBUILD_DIR/SRPMS/php-5.6.40-45.el9.src.rpm $BUILD_DIR/srpms
 rm $BUILD_DIR/php56-php-5.6.40-45.remi.src.rpm
-rm -rf $RPM_BUILD_DIR
+rm -rf $RPMBUILD_DIR
 
 # Create SRPM for php-fedora-autoloader
 cd $BUILD_DIR
 wget https://rpms.remirepo.net/SRPMS/php-fedora-autoloader-1.0.1-2.remi.src.rpm
 rpm -i php-fedora-autoloader-1.0.1-2.remi.src.rpm
-cd $RPM_BUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SPECS
 patch -i $BUILD_DIR/patches/php-fedora-autoloader.spec.patch
 rpmbuild -bs php-fedora-autoloader.spec
-cp $RPM_BUILD_DIR/SRPMS/php-fedora-autoloader-1.0.1-2.el9.src.rpm $BUILD_DIR/srpms
+cp $RPMBUILD_DIR/SRPMS/php-fedora-autoloader-1.0.1-2.el9.src.rpm $BUILD_DIR/srpms
 rm $BUILD_DIR/php-fedora-autoloader-1.0.1-2.remi.src.rpm
-rm -rf $RPM_BUILD_DIR
+rm -rf $RPMBUILD_DIR
 
 # Create SRPM for php-pecl-apcu
 cd $BUILD_DIR
 git clone https://git.remirepo.net/cgit/rpms/php/pecl/php-pecl-apcu.git
 cd $BUILD_DIR/php-pecl-apcu
 git checkout -b php5 origin/php5
-mkdir -p $RPM_BUILD_DIR/SOURCES
-mkdir -p $RPM_BUILD_DIR/SPECS
-cp $BUILD_DIR/php-pecl-apcu/* $RPM_BUILD_DIR/SOURCES
-mv $RPM_BUILD_DIR/SOURCES/php-pecl-apcu.spec $RPM_BUILD_DIR/SPECS
-cd $RPM_BUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SPECS
+cp $BUILD_DIR/php-pecl-apcu/* $RPMBUILD_DIR/SOURCES
+mv $RPMBUILD_DIR/SOURCES/php-pecl-apcu.spec $RPMBUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SOURCES
 wget https://pecl.php.net/get/apcu-4.0.11.tgz
-cd $RPM_BUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SPECS
 rpmbuild -bs php-pecl-apcu.spec
-cp $RPM_BUILD_DIR/SRPMS/php-pecl-apcu-4.0.11-3.el9.src.rpm $BUILD_DIR/srpms
+cp $RPMBUILD_DIR/SRPMS/php-pecl-apcu-4.0.11-3.el9.src.rpm $BUILD_DIR/srpms
 rm -rf $BUILD_DIR/php-pecl-apcu
-rm -rf $RPM_BUILD_DIR
+rm -rf $RPMBUILD_DIR
 
 # Create SRPM for php-pecl-luasandbox
 cd $BUILD_DIR
 git clone https://git.remirepo.net/cgit/rpms/php/pecl/php-pecl-luasandbox.git
 cd $BUILD_DIR/php-pecl-luasandbox
 git checkout -b php5 51bd8640633a4d26f39ad3ce24d6259059295ee5
-mkdir -p $RPM_BUILD_DIR/SOURCES
-mkdir -p $RPM_BUILD_DIR/SPECS
-cp $BUILD_DIR/php-pecl-luasandbox/* $RPM_BUILD_DIR/SOURCES
-mv $RPM_BUILD_DIR/SOURCES/php-pecl-luasandbox.spec $RPM_BUILD_DIR/SPECS
-cd $RPM_BUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SPECS
+cp $BUILD_DIR/php-pecl-luasandbox/* $RPMBUILD_DIR/SOURCES
+mv $RPMBUILD_DIR/SOURCES/php-pecl-luasandbox.spec $RPMBUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SOURCES
 wget https://pecl.php.net/get/LuaSandbox-3.0.3.tgz
-cd $RPM_BUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SPECS
 rpmbuild -bs php-pecl-luasandbox.spec
-cp $RPM_BUILD_DIR/SRPMS/php-pecl-luasandbox-3.0.3-2.el9.src.rpm $BUILD_DIR/srpms
+cp $RPMBUILD_DIR/SRPMS/php-pecl-luasandbox-3.0.3-2.el9.src.rpm $BUILD_DIR/srpms
 rm -rf $BUILD_DIR/php-pecl-luasandbox
-rm -rf $RPM_BUILD_DIR
+rm -rf $RPMBUILD_DIR
    
 # Create SRPM for php-pecl-memcache
 cd $BUILD_DIR
 git clone https://git.remirepo.net/cgit/rpms/php/pecl/php-pecl-memcache.git
 cd $BUILD_DIR/php-pecl-memcache
 git checkout -b php5 origin/php5
-mkdir -p $RPM_BUILD_DIR/SOURCES
-mkdir -p $RPM_BUILD_DIR/SPECS
-cp $BUILD_DIR/php-pecl-memcache/* $RPM_BUILD_DIR/SOURCES
-mv $RPM_BUILD_DIR/SOURCES/php-pecl-memcache.spec $RPM_BUILD_DIR/SPECS
-cd $RPM_BUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SPECS
+cp $BUILD_DIR/php-pecl-memcache/* $RPMBUILD_DIR/SOURCES
+mv $RPMBUILD_DIR/SOURCES/php-pecl-memcache.spec $RPMBUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SOURCES
 wget https://pecl.php.net/get/memcache-3.0.8.tgz
-cd $RPM_BUILD_DIR/SPECS 
+cd $RPMBUILD_DIR/SPECS 
 rpmbuild -bs php-pecl-memcache.spec
-cp $RPM_BUILD_DIR/SRPMS/php-pecl-memcache-3.0.8-9.el9.src.rpm $BUILD_DIR/srpms
+cp $RPMBUILD_DIR/SRPMS/php-pecl-memcache-3.0.8-9.el9.src.rpm $BUILD_DIR/srpms
 rm -rf $BUILD_DIR/php-pecl-memcache
-rm -rf $RPM_BUILD_DIR
+rm -rf $RPMBUILD_DIR
 
 # Create SRPM for php-pecl-igbinary
 cd $BUILD_DIR
 git clone https://git.remirepo.net/cgit/rpms/php/pecl/php-pecl-igbinary.git
 cd $BUILD_DIR/php-pecl-igbinary
 git checkout -b v2 origin/v2
-mkdir -p $RPM_BUILD_DIR/SOURCES
-mkdir -p $RPM_BUILD_DIR/SPECS
-cp $BUILD_DIR/php-pecl-igbinary/* $RPM_BUILD_DIR/SOURCES
-mv $RPM_BUILD_DIR/SOURCES/php-pecl-igbinary.spec $RPM_BUILD_DIR/SPECS
-cd $RPM_BUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SPECS
+cp $BUILD_DIR/php-pecl-igbinary/* $RPMBUILD_DIR/SOURCES
+mv $RPMBUILD_DIR/SOURCES/php-pecl-igbinary.spec $RPMBUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SOURCES
 wget https://pecl.php.net/get/igbinary-2.0.8.tgz
-cd $RPM_BUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SPECS
 rpmbuild -bs php-pecl-igbinary.spec
-cp $RPM_BUILD_DIR/SRPMS/php-pecl-igbinary-2.0.8-1.el9.src.rpm $BUILD_DIR/srpms
+cp $RPMBUILD_DIR/SRPMS/php-pecl-igbinary-2.0.8-1.el9.src.rpm $BUILD_DIR/srpms
 rm -rf $BUILD_DIR/php-pecl-igbinary
-rm -rf $RPM_BUILD_DIR
+rm -rf $RPMBUILD_DIR
 
 # Create SRPM for php-pecl-msgpack
 cd $BUILD_DIR
 git clone https://git.remirepo.net/cgit/rpms/php/pecl/php-pecl-msgpack.git
 cd $BUILD_DIR/php-pecl-msgpack
 git checkout -b php5 origin/php5
-mkdir -p $RPM_BUILD_DIR/SOURCES
-mkdir -p $RPM_BUILD_DIR/SPECS
-cp $BUILD_DIR/php-pecl-msgpack/* $RPM_BUILD_DIR/SOURCES
-mv $RPM_BUILD_DIR/SOURCES/php-pecl-msgpack.spec $RPM_BUILD_DIR/SPECS
-cd $RPM_BUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SPECS
+cp $BUILD_DIR/php-pecl-msgpack/* $RPMBUILD_DIR/SOURCES
+mv $RPMBUILD_DIR/SOURCES/php-pecl-msgpack.spec $RPMBUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SOURCES
 wget https://pecl.php.net/get/msgpack-0.5.7.tgz
-cd $RPM_BUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SPECS
 patch -i $BUILD_DIR/patches/php-pecl-msgpack.spec.patch
 rpmbuild -bs php-pecl-msgpack.spec
-cp $RPM_BUILD_DIR/SRPMS/php-pecl-msgpack-0.5.7-3.el9.src.rpm $BUILD_DIR/srpms
+cp $RPMBUILD_DIR/SRPMS/php-pecl-msgpack-0.5.7-3.el9.src.rpm $BUILD_DIR/srpms
 rm -rf $BUILD_DIR/php-pecl-msgpack
-rm -rf $RPM_BUILD_DIR
+rm -rf $RPMBUILD_DIR
 
 # Create SRPM for php-pecl-memcached
 cd $BUILD_DIR
 git clone https://git.remirepo.net/cgit/rpms/php/pecl/php-pecl-memcached.git
 cd $BUILD_DIR/php-pecl-memcached
 git checkout -b php5 origin/php5
-mkdir -p $RPM_BUILD_DIR/SOURCES
-mkdir -p $RPM_BUILD_DIR/SPECS
-cp $BUILD_DIR/php-pecl-memcached/* $RPM_BUILD_DIR/SOURCES
-mv $RPM_BUILD_DIR/SOURCES/php-pecl-memcached.spec $RPM_BUILD_DIR/SPECS
-cd $RPM_BUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SPECS
+cp $BUILD_DIR/php-pecl-memcached/* $RPMBUILD_DIR/SOURCES
+mv $RPMBUILD_DIR/SOURCES/php-pecl-memcached.spec $RPMBUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SOURCES
 wget https://pecl.php.net/get/memcached-2.2.0.tgz
-cd $RPM_BUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SPECS
 rpmbuild -bs php-pecl-memcached.spec
-cp $RPM_BUILD_DIR/SRPMS/php-pecl-memcached-2.2.0-10.el9.src.rpm $BUILD_DIR/srpms
+cp $RPMBUILD_DIR/SRPMS/php-pecl-memcached-2.2.0-10.el9.src.rpm $BUILD_DIR/srpms
 rm -rf $BUILD_DIR/php-pecl-memcached
-rm -rf $RPM_BUILD_DIR
+rm -rf $RPMBUILD_DIR
 
 # Create SRPM for php-pecl-xdebug
 cd $BUILD_DIR
 git clone https://git.remirepo.net/cgit/rpms/php/pecl/php-pecl-xdebug.git
 cd $BUILD_DIR/php-pecl-xdebug
 git checkout -b v2.5 origin/v2.5
-mkdir -p $RPM_BUILD_DIR/SOURCES
-mkdir -p $RPM_BUILD_DIR/SPECS
-cp $BUILD_DIR/php-pecl-xdebug/* $RPM_BUILD_DIR/SOURCES
-mv $RPM_BUILD_DIR/SOURCES/php-pecl-xdebug.spec $RPM_BUILD_DIR/SPECS
-cd $RPM_BUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SOURCES
+mkdir -p $RPMBUILD_DIR/SPECS
+cp $BUILD_DIR/php-pecl-xdebug/* $RPMBUILD_DIR/SOURCES
+mv $RPMBUILD_DIR/SOURCES/php-pecl-xdebug.spec $RPMBUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SOURCES
 wget https://github.com/xdebug/xdebug/archive/36b4f952ca3196a2300a1ebac1716523dd84d19b/xdebug-2.5.5-36b4f95.tar.gz
-cd $RPM_BUILD_DIR/SPECS
+cd $RPMBUILD_DIR/SPECS
 rpmbuild -bs php-pecl-xdebug.spec
-cp $RPM_BUILD_DIR/SRPMS/php-pecl-xdebug-2.5.5-4.el9.src.rpm $BUILD_DIR/srpms
+cp $RPMBUILD_DIR/SRPMS/php-pecl-xdebug-2.5.5-4.el9.src.rpm $BUILD_DIR/srpms
 rm -rf $BUILD_DIR/php-pecl-xdebug
-rm -rf $RPM_BUILD_DIR
+rm -rf $RPMBUILD_DIR
 
 # Download other SRPMs
 cd $BUILD_DIR/srpms
